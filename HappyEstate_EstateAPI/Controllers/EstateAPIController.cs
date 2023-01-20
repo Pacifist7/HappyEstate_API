@@ -1,4 +1,5 @@
 ﻿using HappyEstate_EstateAPI.Data;
+using HappyEstate_EstateAPI.Data.Logging;
 using HappyEstate_EstateAPI.Models;
 using HappyEstate_EstateAPI.Models.Dto;
 using Microsoft.AspNetCore.JsonPatch;
@@ -10,9 +11,20 @@ namespace HappyEstate_EstateAPI.Controllers
     [ApiController]
     public class EstateAPIController : ControllerBase
     {
+        //private readonly ILogger<EstateAPIController> _logger;
+
+        private readonly ILogging _logger;
+
+        public EstateAPIController(ILogging logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<EstateDTO>> GetEstates() 
         {
+            _logger.Log("Getting all estates", "");
             return Ok(EstateStore.estateList);
         }
 
@@ -27,6 +39,7 @@ namespace HappyEstate_EstateAPI.Controllers
         {
             if (id==0)
             {
+                _logger.Log("Get Estate Error with Id " + id, "error");
                 return BadRequest();
             }
 
