@@ -2,10 +2,8 @@
 
 namespace HappyEstate_EstateAPI.Models.Dto
 {
-    public class EstateDTO
+    public class EstateCreateDTO
     {
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
