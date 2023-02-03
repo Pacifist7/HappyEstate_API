@@ -6,18 +6,18 @@ using System.Linq.Expressions;
 
 namespace HappyEstate_EstateAPI.Repository
 {
-    public class EstateRepository : Repository<Estate>, IEstateRepository
+    public class EstateNumberRepository : Repository<EstateNumber>, IEstateNumberRepository
     {
         private readonly ApplicationDbContext _db;
-        public EstateRepository(ApplicationDbContext db) : base(db) 
+        public EstateNumberRepository(ApplicationDbContext db) : base(db) 
         {
             _db = db;
         }
 
-        public async Task<Estate> UpdateAsync(Estate entity)
+        public async Task<EstateNumber> UpdateAsync(EstateNumber entity)
         {
             entity.UpdatedDate = DateTime.Now;
-            _db.Estates.Update(entity);
+            _db.EstateNumbers.Update(entity);
             await _db.SaveChangesAsync();
             return entity;
         }

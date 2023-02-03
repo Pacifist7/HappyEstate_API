@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 
 namespace HappyEstate_EstateAPI.Repository.IRepository
 {
-    public interface IEstateRepository : IRepository<Estate>
+    public interface IEstateNumberRepository : IRepository<EstateNumber>
     {
-        Task<Estate> UpdateAsync(Estate entity);
+        Task<EstateNumber> UpdateAsync(EstateNumber entity);
     }
 }

@@ -10,6 +10,7 @@ namespace HappyEstate_EstateAPI.Data
 
         }
         public DbSet<Estate> Estates { get; set; }
+        public DbSet<EstateNumber> EstateNumbers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Estate>().HasData(

@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 });
 
 builder.Services.AddScoped<IEstateRepository, EstateRepository>();
+builder.Services.AddScoped<IEstateNumberRepository, EstateNumberRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 

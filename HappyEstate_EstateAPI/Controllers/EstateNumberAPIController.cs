@@ -12,28 +12,28 @@ using System.Net;
 
 namespace HappyEstate_EstateAPI.Controllers
 {
-    [Route("api/EstateAPI")]
+    [Route("api/EstateNumberAPI")]
     [ApiController]
-    public class EstateAPIController : ControllerBase
+    public class EstateNumberAPIController : ControllerBase
     {
         protected APIResponse _response;
-        private readonly IEstateRepository _dbEstate;
+        private readonly IEstateNumberRepository _dbEstateNumber;
         private readonly IMapper _mapper;
-        public EstateAPIController(IEstateRepository dbEstate, IMapper mapper)
+        public EstateNumberAPIController(IEstateNumberRepository dbEstateNumber, IMapper mapper)
         {
-            _dbEstate = dbEstate;
+            _dbEstateNumber = dbEstateNumber;
             _mapper = mapper;
             this._response = new();
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetEstates()
+        public async Task<ActionResult<APIResponse>> GetEstateNumbers()
         {
             try
             {
-                IEnumerable<Estate> estateList = await _dbEstate.GetAllAsnyc();
-                _response.Result = _mapper.Map<List<EstateDTO>>(estateList);
+                IEnumerable<EstateNumber> estateNumberList = await _dbEstateNumber.GetAllAsnyc();
+                _response.Result = _mapper.Map<List<EstateNumberDTO>>(estateNumberList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
@@ -46,11 +46,11 @@ namespace HappyEstate_EstateAPI.Controllers
             return _response;
         }
 
-        [HttpGet("{id:int}", Name = "GetEstate")]
+        [HttpGet("{id:int}", Name = "GetEstateNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> GetEstate(int id)
+        public async Task<ActionResult<APIResponse>> GetEstateNumber(int id)
         {
             try
             {
@@ -60,15 +60,15 @@ namespace HappyEstate_EstateAPI.Controllers
                     return BadRequest(_response);
                 }
 
-                var estate = await _dbEstate.GetAsnyc(u => u.Id == id);
+                var estateNumber = await _dbEstateNumber.GetAsnyc(u => u.EstateNo == id);
 
-                if (estate == null)
+                if (estateNumber == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     return NotFound(_response);
                 }
 
-                _response.Result = _mapper.Map<EstateDTO>(estate);
+                _response.Result = _mapper.Map<EstateNumberDTO>(estateNumber);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
             }
@@ -85,14 +85,14 @@ namespace HappyEstate_EstateAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> CreateEstate([FromBody] EstateCreateDTO createDTO)
+        public async Task<ActionResult<APIResponse>> CreateEstateNumber([FromBody] EstateNumberCreateDTO createDTO)
         {
             try
             {
 
-                if (await _dbEstate.GetAsnyc(u => u.Name.ToLower() == createDTO.Name.ToLower()) != null)
+                if (await _dbEstateNumber.GetAsnyc(u => u.EstateNo == createDTO.EstateNo) != null)
                 {
-                    ModelState.AddModelError("CustomError", "Estate already exists");
+                    ModelState.AddModelError("CustomError", "Estate Number already exists");
                     return BadRequest(ModelState);
                 }
                 if (createDTO == null)
@@ -100,12 +100,12 @@ namespace HappyEstate_EstateAPI.Controllers
                     return BadRequest(createDTO);
                 }
 
-                Estate estate = _mapper.Map<Estate>(createDTO);
+                EstateNumber estateNumber = _mapper.Map<EstateNumber>(createDTO);
 
-                await _dbEstate.CreateAsnyc(estate);
-                _response.Result = _mapper.Map<EstateDTO>(estate);
+                await _dbEstateNumber.CreateAsnyc(estateNumber);
+                _response.Result = _mapper.Map<EstateNumberDTO>(estateNumber);
                 _response.StatusCode = HttpStatusCode.Created;
-                return CreatedAtRoute("GetEstate", new { id = estate.Id }, _response);
+                return CreatedAtRoute("GetEstate", new { id = estateNumber.EstateNo }, _response);
             }
             catch (Exception ex)
             {
@@ -119,8 +119,8 @@ namespace HappyEstate_EstateAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpDelete("{id:int}", Name = "DeleteEstate")]
-        public async Task<ActionResult<APIResponse>> DeleteEstate(int id)
+        [HttpDelete("{id:int}", Name = "DeleteEstateNumber")]
+        public async Task<ActionResult<APIResponse>> DeleteEstateNumber(int id)
         {
             try
             {
@@ -131,18 +131,19 @@ namespace HappyEstate_EstateAPI.Controllers
                     return BadRequest();
                 }
 
-                var estate = await _dbEstate.GetAsnyc(e => e.Id == id);
+                var estateNumber = await _dbEstateNumber.GetAsnyc(e => e.EstateNo == id);
 
-                if (estate == null)
+                if (estateNumber == null)
                 {
                     return NotFound();
                 }
 
-                await _dbEstate.RemoveAsnyc(estate);
+                await _dbEstateNumber.RemoveAsnyc(estateNumber);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);
             }
+
             catch (Exception ex)
             {
                 _response.IsSuccess = false;
@@ -154,21 +155,19 @@ namespace HappyEstate_EstateAPI.Controllers
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPut("{id:int}", Name = "UpdateEstate")]
-        public async Task<ActionResult<APIResponse>> UpdateEstate(int id, [FromBody] EstateDTO updateDTO)
+        [HttpPut("{id:int}", Name = "UpdateEstateNumber")]
+        public async Task<ActionResult<APIResponse>> UpdateEstateNumber(int id, [FromBody] EstateNumberUpdateDTO updateDTO)
         {
             try
             {
-
-
-                if (updateDTO == null || id != updateDTO.Id)
+                if (updateDTO == null || id != updateDTO.EstateNo)
                 {
                     return BadRequest();
                 }
 
-                Estate model = _mapper.Map<Estate>(updateDTO);
+                EstateNumber model = _mapper.Map<EstateNumber>(updateDTO);
 
-                await _dbEstate.UpdateAsync(model);
+                await _dbEstateNumber.UpdateAsync(model);
                 _response.StatusCode = HttpStatusCode.NoContent;
                 _response.IsSuccess = true;
                 return Ok(_response);
@@ -181,37 +180,5 @@ namespace HappyEstate_EstateAPI.Controllers
             }
             return _response;
         }
-
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[HttpPatch("{id:int}", Name ="UpdatePartialEstate")]
-        //public async Task<IActionResult> UpdatePartialEstate(int id, JsonPatchDocument<EstateUpdateDTO> patchDTO) 
-        //{
-        //    if (patchDTO == null || id == 0) 
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var estate = await _dbEstate.GetAsnyc(u=>u.Id==id, tracked:false);
-
-        //    EstateUpdateDTO estateDTO = _mapper.Map<EstateUpdateDTO>(estate);
-
-        //    if (estate == null) 
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    patchDTO.ApplyTo(estateDTO, ModelState);
-        //    Estate model = _mapper.Map<Estate>(estateDTO);
-
-        //    await _dbEstate.UpdateAsync(model);
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    return NoContent();
-        //}
     }
 }
