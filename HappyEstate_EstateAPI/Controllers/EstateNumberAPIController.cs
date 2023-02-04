@@ -18,12 +18,14 @@ namespace HappyEstate_EstateAPI.Controllers
     {
         protected APIResponse _response;
         private readonly IEstateNumberRepository _dbEstateNumber;
+        private readonly IEstateRepository _dbEstate;
         private readonly IMapper _mapper;
-        public EstateNumberAPIController(IEstateNumberRepository dbEstateNumber, IMapper mapper)
+        public EstateNumberAPIController(IEstateNumberRepository dbEstateNumber, IMapper mapper, IEstateRepository dbEstate)
         {
             _dbEstateNumber = dbEstateNumber;
             _mapper = mapper;
             this._response = new();
+            _dbEstate = dbEstate;
         }
 
         [HttpGet]
@@ -95,6 +97,13 @@ namespace HappyEstate_EstateAPI.Controllers
                     ModelState.AddModelError("CustomError", "Estate Number already exists");
                     return BadRequest(ModelState);
                 }
+
+                if(await _dbEstate.GetAsnyc(u=>u.Id== createDTO.EstateID) == null)
+                {
+                    ModelState.AddModelError("CustomerError", "Villa ID is Invalid!");
+                    return BadRequest(ModelState);
+                }
+
                 if (createDTO == null)
                 {
                     return BadRequest(createDTO);
@@ -116,7 +125,7 @@ namespace HappyEstate_EstateAPI.Controllers
             return _response;
         }
 
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{id:int}", Name = "DeleteEstateNumber")]
@@ -153,7 +162,7 @@ namespace HappyEstate_EstateAPI.Controllers
             return _response;
         }
 
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{id:int}", Name = "UpdateEstateNumber")]
         public async Task<ActionResult<APIResponse>> UpdateEstateNumber(int id, [FromBody] EstateNumberUpdateDTO updateDTO)
@@ -163,6 +172,12 @@ namespace HappyEstate_EstateAPI.Controllers
                 if (updateDTO == null || id != updateDTO.EstateNo)
                 {
                     return BadRequest();
+                }
+
+                if (await _dbEstate.GetAsnyc(u => u.Id == updateDTO.EstateID) == null)
+                {
+                    ModelState.AddModelError("CustomerError", "Villa ID is Invalid!");
+                    return BadRequest(ModelState);
                 }
 
                 EstateNumber model = _mapper.Map<EstateNumber>(updateDTO);

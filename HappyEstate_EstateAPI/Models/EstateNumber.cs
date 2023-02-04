@@ -7,6 +7,9 @@ namespace HappyEstate_EstateAPI.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int EstateNo { get; set; }
+        [ForeignKey("Estate")]
+        public int EstateID { get; set; }
+        public Estate Estate { get; set; }
         public string SpecialDetails { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
