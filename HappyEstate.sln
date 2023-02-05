@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyEstate_EstateAPI", "HappyEstate_EstateAPI\HappyEstate_EstateAPI.csproj", "{90991A92-332C-41EB-BFE6-5DACC663D96B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HappyEstate_EstateAPI", "HappyEstate_EstateAPI\HappyEstate_EstateAPI.csproj", "{90991A92-332C-41EB-BFE6-5DACC663D96B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyEstate_Web", "HappyEstate_Web\HappyEstate_Web.csproj", "{C779D2CD-B0D4-4C75-8933-67BCCA793BB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HappyEstate_Utility", "HappyEstate_Utility\HappyEstate_Utility.csproj", "{0AAED476-1073-4694-8CDE-A23E622BEA26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{90991A92-332C-41EB-BFE6-5DACC663D96B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90991A92-332C-41EB-BFE6-5DACC663D96B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90991A92-332C-41EB-BFE6-5DACC663D96B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C779D2CD-B0D4-4C75-8933-67BCCA793BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C779D2CD-B0D4-4C75-8933-67BCCA793BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C779D2CD-B0D4-4C75-8933-67BCCA793BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C779D2CD-B0D4-4C75-8933-67BCCA793BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AAED476-1073-4694-8CDE-A23E622BEA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AAED476-1073-4694-8CDE-A23E622BEA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AAED476-1073-4694-8CDE-A23E622BEA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AAED476-1073-4694-8CDE-A23E622BEA26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
