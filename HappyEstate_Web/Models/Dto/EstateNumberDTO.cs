@@ -10,5 +10,6 @@ namespace HappyEstate_Web.Models.Dto
         [Required]
         public int EstateID { get; set; }
         public string SpecialDetails { get; set; }
+        public EstateDTO Estate { get; set; }
     }
 }

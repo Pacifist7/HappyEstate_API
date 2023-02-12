@@ -34,7 +34,7 @@ namespace HappyEstate_EstateAPI.Controllers
         {
             try
             {
-                IEnumerable<EstateNumber> estateNumberList = await _dbEstateNumber.GetAllAsnyc();
+                IEnumerable<EstateNumber> estateNumberList = await _dbEstateNumber.GetAllAsnyc(includePreperties:"Estate");
                 _response.Result = _mapper.Map<List<EstateNumberDTO>>(estateNumberList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);

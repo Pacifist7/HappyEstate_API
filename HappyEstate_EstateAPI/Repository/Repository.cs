@@ -13,6 +13,7 @@ namespace HappyEstate_EstateAPI.Repository
         public Repository(ApplicationDbContext db)
         {
             _db = db;
+            //_db.EstateNumbers.Include(u => u.Estate).ToList();
             this.dbSet = _db.Set<T>();
         }
         public async Task CreateAsnyc(T entity)
@@ -21,7 +22,7 @@ namespace HappyEstate_EstateAPI.Repository
             await SaveAsnyc();
         }
 
-        public async Task<T> GetAsnyc(Expression<Func<T, bool>> filter = null, bool tracked = true)
+        public async Task<T> GetAsnyc(Expression<Func<T, bool>> filter = null, bool tracked = true, string? includePreperties = null)
         {
             IQueryable<T> query = dbSet;
 
@@ -35,10 +36,19 @@ namespace HappyEstate_EstateAPI.Repository
                 query = query.Where(filter);
             }
 
+            if(includePreperties!= null)
+            {
+                foreach (var includeProp in includePreperties.Split(new char[] { ',' }, 
+                    StringSplitOptions.RemoveEmptyEntries)) 
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<T>> GetAllAsnyc(Expression<Func<T, bool>>? filter = null)
+        public async Task<List<T>> GetAllAsnyc(Expression<Func<T, bool>>? filter = null, string? includePreperties = null)
         {
             IQueryable<T> query = dbSet;     
             
@@ -46,6 +56,16 @@ namespace HappyEstate_EstateAPI.Repository
             {
                 query = query.Where(filter);
             }
+
+            if (includePreperties != null)
+            {
+                foreach (var includeProp in includePreperties.Split(new char[] { ',' },
+                    StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
             return await query.ToListAsync();
         }
 
