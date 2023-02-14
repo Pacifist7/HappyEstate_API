@@ -107,6 +107,7 @@ namespace HappyEstate_Web.Controllers
                         Text = i.Name,
                         Value = i.Id.ToString()
                     });
+
                 return View(estateNumberVM);
             }
 
@@ -150,14 +151,14 @@ namespace HappyEstate_Web.Controllers
 
         public async Task<IActionResult> DeleteEstateNumber(int estateNo)
         {
-            EstateNumberUpdateVM estateNumberVM = new();
+            EstateNumberDeleteVM estateNumberVM = new();
 
             var response = await _estateNumberService.GetAsync<APIResponse>(estateNo);
 
             if (response != null && response.IsSuccess)
             {
                 EstateNumberDTO model = JsonConvert.DeserializeObject<EstateNumberDTO>(Convert.ToString(response.Result));
-                estateNumberVM.EstateNumber = _mapper.Map<EstateNumberUpdateDTO>(model);
+                estateNumberVM.EstateNumber = model;
             }
 
             response = await _estateService.GetAllAsync<APIResponse>();
