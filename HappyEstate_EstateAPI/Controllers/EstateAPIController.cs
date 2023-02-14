@@ -92,7 +92,7 @@ namespace HappyEstate_EstateAPI.Controllers
 
                 if (await _dbEstate.GetAsnyc(u => u.Name.ToLower() == createDTO.Name.ToLower()) != null)
                 {
-                    ModelState.AddModelError("CustomError", "Estate already exists");
+                    ModelState.AddModelError("ErrorMessages", "Estate already exists");
                     return BadRequest(ModelState);
                 }
                 if (createDTO == null)

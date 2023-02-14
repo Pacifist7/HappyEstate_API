@@ -94,13 +94,13 @@ namespace HappyEstate_EstateAPI.Controllers
 
                 if (await _dbEstateNumber.GetAsnyc(u => u.EstateNo == createDTO.EstateNo) != null)
                 {
-                    ModelState.AddModelError("CustomError", "Estate Number already exists");
+                    ModelState.AddModelError("ErrorMessages", "Estate Number already exists");
                     return BadRequest(ModelState);
                 }
 
                 if(await _dbEstate.GetAsnyc(u=>u.Id== createDTO.EstateID) == null)
                 {
-                    ModelState.AddModelError("CustomerError", "Villa ID is Invalid!");
+                    ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid!");
                     return BadRequest(ModelState);
                 }
 
@@ -176,7 +176,7 @@ namespace HappyEstate_EstateAPI.Controllers
 
                 if (await _dbEstate.GetAsnyc(u => u.Id == updateDTO.EstateID) == null)
                 {
-                    ModelState.AddModelError("CustomerError", "Villa ID is Invalid!");
+                    ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid!");
                     return BadRequest(ModelState);
                 }
 

@@ -29,10 +29,10 @@
                     <td>@item.Estate.Name</td>
                     <td>@item.EstateNo</td>
                     <td>
-                        <a asp-controller="Estate" asp-action="UpdateEstateNumber" asp-route-estateNo="@item.EstateNo" class="btn btn-success">
+                        <a asp-controller="EstateNumber" asp-action="UpdateEstateNumber" asp-route-estateNo="@item.EstateNo" class="btn btn-success">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a asp-controller="Estate" asp-action="DeleteEstateNumber" asp-route-estateNo="@item.EstateNo" class="btn btn-danger">
+                        <a asp-controller="EstateNumber" asp-action="DeleteEstateNumber" asp-route-estateNo="@item.EstateNo" class="btn btn-danger">
                             <i class="bi bi-trash-fill"></i>
                         </a>
                     </td>

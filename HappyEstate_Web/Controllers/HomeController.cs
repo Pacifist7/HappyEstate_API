@@ -1,32 +1,33 @@
-﻿using HappyEstate_Web.Models;
+﻿using AutoMapper;
+using HappyEstate_EstateAPI.Models;
+using HappyEstate_Web.Models;
+using HappyEstate_Web.Models.Dto;
+using HappyEstate_Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace HappyEstate_Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IEstateService _estateService;
+        private readonly IMapper _mapper;
+        public HomeController(IEstateService estateService, IMapper mapper)
         {
-            _logger = logger;
+            _estateService = estateService;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            List<EstateDTO> list = new();
+            var response = await _estateService.GetAllAsync<APIResponse>();
+            if (response != null && response.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<List<EstateDTO>>(Convert.ToString(response.Result));
+            }
+            return View(list);
         }
     }
 }
