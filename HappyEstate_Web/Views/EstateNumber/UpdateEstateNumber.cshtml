@@ -5,6 +5,7 @@
     <div class="container border p-3">
         <h1 class="text-primary">Update Estate</h1>
         <hr />
+        <input hidden-asp-for="EstateNumber.EstateNo" />
         <div class="row">
             <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -30,13 +31,13 @@
                 <label asp-for="EstateNumber.SpecialDetails" class="control-label pt-2" stytle="font-size:20px;"></label>
             </div>
             <div class="col-10 pb-3">
-                <input asp-for="EstateNumber.SpecialDetails" class="form-control" />
+                <textarea asp-for="EstateNumber.SpecialDetails" class="form-control" rows="5" /></textarea>
                 <span asp-validation-for="EstateNumber.SpecialDetails" class="text-danger"></span>
             </div>
 
 
             <div class="col-5 offset-2">
-                <a asp-action="UpdateEstateNumber" asp-controller="EstateNumber" class="btn-primary btn form-control">Back to List</a>
+                <a asp-action="IndexEstateNumber" asp-controller="EstateNumber" class="btn-primary btn form-control">Back to List</a>
             </div>
             <div class="col-5">
                 <input type="submit" value="Update" class="btn btn-success form-control" />
