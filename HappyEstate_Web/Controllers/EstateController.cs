@@ -44,22 +44,22 @@ namespace HappyEstate_Web.Controllers
                 var response = await _estateService.CreateAsync<APIResponse>(model);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["success"] = "Estate created successfully";
                     return RedirectToAction(nameof(IndexEstate));            
                 }
             }
+            TempData["error"] = "Error encountered";
             return View(model);
         }
 
         public async Task<IActionResult> UpdateEstate(int estateId)
         {
             var response = await _estateService.GetAsync<APIResponse>(estateId);
-
             if (response != null && response.IsSuccess)
             {
                 EstateDTO model = JsonConvert.DeserializeObject<EstateDTO>(Convert.ToString(response.Result));
                 return View(_mapper.Map<EstateUpdateDTO>(model));
             }
-
             return NotFound();
         }
 
@@ -69,25 +69,25 @@ namespace HappyEstate_Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["success"] = "Estate updated successfully";
                 var response = await _estateService.UpdateAsync<APIResponse>(model);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(IndexEstate));
                 }
             }
+            TempData["error"] = "Error encountered";
             return View(model);
         }
 
         public async Task<IActionResult> DeleteEstate(int estateId)
         {
             var response = await _estateService.GetAsync<APIResponse>(estateId);
-
             if (response != null && response.IsSuccess)
             {
                 EstateDTO model = JsonConvert.DeserializeObject<EstateDTO>(Convert.ToString(response.Result));
                 return View(model);
             }
-
             return NotFound();
         }
 
@@ -96,12 +96,12 @@ namespace HappyEstate_Web.Controllers
         public async Task<IActionResult> DeleteEstate(EstateDTO model)
         {
             var response = await _estateService.DeleteAsync<APIResponse>(model.Id);
-
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Estate deleted successfully";
                 return RedirectToAction(nameof(IndexEstate));
             }
-            
+            TempData["error"] = "Error encountered";
             return View(model);
         }
     }
